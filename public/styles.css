@@ -322,6 +322,12 @@ th:nth-child(7) { width: 8%; }
 
 .login-view { flex: 1; min-height: 0; display: grid; place-items: center; padding: 20px; }
 .login-view[hidden] { display: none; }
+
+/* Strong rule to guarantee dashboard never leaks below login */
+.dashboard[hidden],
+.app-window.is-login .dashboard {
+  display: none !important;
+}
 .login-card { width: min(390px, 100%); padding: 29px; border: 1px solid var(--border); border-radius: 15px; background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012)); box-shadow: 0 26px 60px -28px rgba(0, 0, 0, 0.9); }
 .login-mark { width: 44px; height: 44px; display: grid; place-items: center; margin-bottom: 20px; border: 1px solid var(--purple-border); border-radius: 12px; color: #c4b5fd; background: var(--purple-soft); }
 .login-mark svg { width: 20px; height: 20px; }
