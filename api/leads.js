@@ -4,7 +4,7 @@ import { randomUUID } from 'node:crypto';
 import { readLeads, insertLeadToSupabase } from './lib/supabase.js';
 
 const ALLOWED_ORIGINS = new Set(
-  (process.env.LEAD_ORIGINS || '')
+  (process.env.LEAD_ORIGINS || 'https://lp-det-atualizada.vercel.app,https://lp-det-atualizada.vercel.app')
     .split(',')
     .map((v) => v.trim())
     .filter(Boolean),

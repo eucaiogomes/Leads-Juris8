@@ -15,7 +15,7 @@ const PORT = Number(process.env.PORT || 8787);
 const HOST = process.env.HOST || '127.0.0.1';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '';
 const ALLOWED_ORIGINS = new Set(
-  (process.env.LEAD_ORIGINS || '')
+  (process.env.LEAD_ORIGINS || 'https://lp-det-atualizada.vercel.app')
     .split(',')
     .map((value) => value.trim())
     .filter(Boolean),

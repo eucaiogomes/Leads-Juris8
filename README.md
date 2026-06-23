@@ -61,10 +61,12 @@ LEAD_ORIGINS=*
 
 5. Copie a URL que o ngrok mostrar (ex: `https://abc123.ngrok-free.app`)
 
-6. Use essa URL no formulário da landing page:
+6. Use essa URL no formulário da landing page (https://lp-det-atualizada.vercel.app):
    ```html
-   <form id="lead-form" data-endpoint="https://abc123.ngrok-free.app/api/leads">
+   <form id="lead-form" data-endpoint="https://SEU-NGROK.ngrok.io/api/leads">
    ```
+
+Para a landing real (https://lp-det-atualizada.vercel.app), aponte para a URL do admin deployado no Vercel + /api/leads.
 
 7. Acesse o painel admin pela mesma URL do ngrok.
 
@@ -100,7 +102,7 @@ O projeto não possui dependências externas. É necessário Node.js 20 ou super
 No formulário da LP, use a URL deste serviço no atributo `data-endpoint`:
 
 ```html
-<form id="lead-form" data-endpoint="http://127.0.0.1:8787/api/leads">
+<form id="lead-form" data-endpoint="https://SEU-ADMIN.vercel.app/api/leads">
 ```
 
 Para produção, substitua essa URL pelo endereço público em que este projeto for hospedado e atualize `LEAD_ORIGINS` no arquivo `.env` com o domínio real da landing page.
