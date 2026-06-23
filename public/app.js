@@ -125,10 +125,12 @@ function showLogin() {
   clearInterval(state.refreshTimer);
   elements.dashboard.hidden = true;
   elements.loginView.hidden = false;
+  document.querySelector('.app-window')?.classList.add('is-login');
   requestAnimationFrame(() => elements.password.focus());
 }
 
 function showDashboard() {
+  document.querySelector('.app-window')?.classList.remove('is-login');
   elements.loginView.hidden = true;
   elements.dashboard.hidden = false;
   clearInterval(state.refreshTimer);

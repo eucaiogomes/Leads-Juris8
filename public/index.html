@@ -22,14 +22,8 @@
         <span class="live-badge"><span aria-hidden="true"></span>ao vivo</span>
       </header>
 
-      <section class="login-view" id="login-view" aria-labelledby="login-title">
-        <div class="login-card">
-          <div class="login-mark" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 5.5h16v13H4z"/><path d="m4 8 8 5 8-5"/></svg>
-          </div>
-          <span class="mono-label">ACESSO RESTRITO</span>
-          <h1 id="login-title">Painel de leads DET</h1>
-          <p>Entre para visualizar os contatos recebidos pela landing page.</p>
+      <section class="login-view" id="login-view">
+        <div class="login-card login-card-simple">
           <form id="login-form" novalidate>
             <label for="admin-password">Senha do administrador</label>
             <div class="password-field">
@@ -41,11 +35,9 @@
             </div>
             <p class="form-error" id="login-error" role="alert"></p>
             <button class="primary-button" id="login-button" type="submit">
-              <span>Acessar painel</span>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+              <span>Entrar</span>
             </button>
           </form>
-          <p class="login-footnote">A sessão é protegida e expira automaticamente.</p>
         </div>
       </section>
 
