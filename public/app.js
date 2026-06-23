@@ -150,7 +150,8 @@ async function loadLeads(trigger) {
       elements.loginError.textContent = 'Sua sessão expirou. Entre novamente.';
       return;
     }
-    showToast(error.message || 'Não foi possível atualizar os leads.', true);
+    const msg = error.details ? `${error.message} - ${error.details}` : error.message;
+    showToast(msg || 'Não foi possível atualizar os leads.', true);
   } finally {
     if (trigger) trigger.classList.remove('loading');
   }
@@ -360,6 +361,7 @@ async function api(path, options = {}) {
   if (!response.ok) {
     const error = new Error(payload.error || 'Não foi possível concluir a solicitação.');
     error.status = response.status;
+    if (payload.details) error.details = payload.details;
     throw error;
   }
   return payload;
