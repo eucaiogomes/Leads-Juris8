@@ -44,7 +44,7 @@ function mapLeadToSupabaseRow(lead) {
 }
 
 export async function readLeads() {
-  if (!SUPABASE_URL || !SUPABASE_KEY) {
+  if (!SUPABASE_URL || (!SUPABASE_KEY && !SUPABASE_SERVICE_KEY)) {
     throw Object.assign(new Error('Supabase não configurado.'), { status: 500 });
   }
 
@@ -108,7 +108,7 @@ export async function insertLeadToSupabase(lead) {
 }
 
 export async function updateLeadInSupabase(id, patch) {
-  if (!SUPABASE_URL || !SUPABASE_KEY) {
+  if (!SUPABASE_URL || (!SUPABASE_KEY && !SUPABASE_SERVICE_KEY)) {
     throw Object.assign(new Error('Supabase não configurado.'), { status: 500 });
   }
 
