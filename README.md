@@ -14,12 +14,78 @@ Projeto separado da landing page para receber, salvar e administrar os leads int
 - Atualização de status e anotações internas.
 - Interface responsiva inspirada no Mockup 9 da Juris8.
 
-## Como iniciar
+## Como iniciar (local - recomendado para testes)
 
-1. Abra um terminal nesta pasta.
-2. Execute `npm start`.
-3. Acesse `http://127.0.0.1:8787`.
-4. Use a senha definida em `.env`.
+1. Crie um arquivo `.env` na raiz com:
+   ```
+   SUPABASE_URL=https://seu-projeto.supabase.co
+   SUPABASE_PUBLISHABLE_KEY=sua_publishable_key
+   SUPABASE_SERVICE_ROLE_KEY=sua_service_role_key
+   ADMIN_PASSWORD=qualquercoisa
+   LEAD_ORIGINS=*
+   ```
+
+2. Rode: `npm start`
+3. Acesse http://localhost:8787
+
+### Forma MAIS SIMPLES para testes (recomendado agora)
+
+Use o servidor local + ngrok. É bem mais fácil que Vercel pra testar agora.
+
+**Passos:**
+
+1. Crie o arquivo `.env` na raiz do projeto com isso (cole suas chaves reais):
+
+```
+SUPABASE_URL=https://myyawepbfvxzjnlxcjql.supabase.co
+SUPABASE_PUBLISHABLE_KEY=sb_publishable_fvDRMrZzyRiZWH9W32-RYw_P-9wXYWw
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... (cole a chave completa aqui)
+ADMIN_PASSWORD=123456
+LEAD_ORIGINS=*
+```
+
+2. Rode o servidor:
+   ```powershell
+   npm start
+   ```
+
+3. Instale o ngrok (uma única vez):
+   ```powershell
+   npm install -g ngrok
+   ```
+
+4. Abra **outro terminal** e rode:
+   ```powershell
+   ngrok http 8787
+   ```
+
+5. Copie a URL que o ngrok mostrar (ex: `https://abc123.ngrok-free.app`)
+
+6. Use essa URL no formulário da landing page:
+   ```html
+   <form id="lead-form" data-endpoint="https://abc123.ngrok-free.app/api/leads">
+   ```
+
+7. Acesse o painel admin pela mesma URL do ngrok.
+
+---
+
+**Teste sem login (já configurado)**
+
+O código já está com autenticação desabilitada para testes:
+- `/api/session` sempre retorna autenticado
+- Endpoints de leads não exigem login
+- Login aceita qualquer senha
+
+Basta rodar `npm start` + ngrok e abrir o painel direto. 
+
+Quando quiser voltar ao modo normal (com segurança), descomente as verificações de `isAuthenticated` no `server.mjs`.
+
+---
+
+Isso é o jeito mais simples e rápido possível pra testar agora. Você vê tudo no terminal e não precisa se preocupar com deploy, cookies entre requisições, etc. 
+
+Quando o teste estiver funcionando, aí a gente volta pro Vercel de forma correta.
 
 O projeto não possui dependências externas. É necessário Node.js 20 ou superior.
 

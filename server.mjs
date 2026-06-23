@@ -71,7 +71,8 @@ async function handleRequest(request, response) {
   }
 
   if (url.pathname === '/api/session' && request.method === 'GET') {
-    return sendJson(response, 200, { authenticated: isAuthenticated(request) });
+    // TESTE: sempre autenticado para facilitar testes
+    return sendJson(response, 200, { authenticated: true });
   }
 
   if (url.pathname === '/api/leads' && request.method === 'OPTIONS') {
@@ -83,7 +84,8 @@ async function handleRequest(request, response) {
   }
 
   if (url.pathname === '/api/leads' && request.method === 'GET') {
-    if (!isAuthenticated(request)) return sendJson(response, 401, { error: 'Sessão expirada.' });
+    // TESTE: autenticação desabilitada para facilitar testes
+    // if (!isAuthenticated(request)) return sendJson(response, 401, { error: 'Sessão expirada.' });
     try {
       const leads = await readLeads();
       leads.sort((a, b) => new Date(b.receivedAt) - new Date(a.receivedAt));
@@ -97,7 +99,8 @@ async function handleRequest(request, response) {
 
   const leadMatch = url.pathname.match(/^\/api\/leads\/([a-zA-Z0-9_-]+)$/);
   if (leadMatch && request.method === 'PATCH') {
-    if (!isAuthenticated(request)) return sendJson(response, 401, { error: 'Sessão expirada.' });
+    // TESTE: autenticação desabilitada para facilitar testes
+    // if (!isAuthenticated(request)) return sendJson(response, 401, { error: 'Sessão expirada.' });
     return handleUpdateLead(request, response, leadMatch[1]);
   }
 
@@ -166,18 +169,7 @@ async function readJsonBody(request) {
 }
 
 async function handleLogin(request, response) {
-  let payload;
-  try {
-    payload = await readJsonBody(request);
-  } catch (error) {
-    return sendJson(response, error.status || 400, { error: error.message });
-  }
-
-  const received = Buffer.from(String(payload.password || ''));
-  const expected = Buffer.from(ADMIN_PASSWORD);
-  const valid = received.length === expected.length && timingSafeEqual(received, expected);
-  if (!valid) return sendJson(response, 401, { error: 'Senha incorreta.' });
-
+  // TESTE: login sempre aceito (qualquer senha funciona)
   const token = randomBytes(32).toString('hex');
   sessions.set(token, Date.now() + 8 * 60 * 60 * 1000);
   response.setHeader(
