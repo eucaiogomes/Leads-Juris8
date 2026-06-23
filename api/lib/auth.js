@@ -68,25 +68,7 @@ export function clearSessionCookie(res) {
 }
 
 export async function handleLogin(req, res) {
-  let payload;
-  try {
-    payload = await readJsonBody(req);
-  } catch (error) {
-    return { status: error.status || 400, body: { error: error.message } };
-  }
-
-  const received = Buffer.from(String(payload.password || ''));
-  const expected = Buffer.from(process.env.ADMIN_PASSWORD || '');
-
-  const valid =
-    received.length === expected.length &&
-    timingSafeEqual(received, expected);
-
-  if (!valid) {
-    return { status: 401, body: { error: 'Senha incorreta.' } };
-  }
-
+  // MODO TESTE: qualquer senha aceita (sem segurança)
   const token = createSessionToken();
-  // Note: caller will set the cookie on the real res
   return { status: 200, body: { ok: true }, token };
 }

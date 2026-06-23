@@ -1,5 +1,5 @@
 import { setSecurityHeaders, sendJson, readJsonBody, applyCors, handleCorsPreflight, clean, validDate } from './lib/utils.js';
-import { isAuthenticated } from './lib/auth.js';
+// import { isAuthenticated } from './lib/auth.js';  // desabilitado no modo teste
 import { randomUUID } from 'node:crypto';
 import { readLeads, insertLeadToSupabase } from './lib/supabase.js';
 
@@ -72,11 +72,11 @@ export default async function handler(req, res) {
     return sendJson(res, 201, { ok: true, id: lead.id });
   }
 
-  // GET /api/leads - protected
+  // GET /api/leads - MODO TESTE: sem autenticação
   if (req.method === 'GET') {
-    if (!isAuthenticated(req)) {
-      return sendJson(res, 401, { error: 'Sessão expirada.' });
-    }
+    // if (!isAuthenticated(req)) {
+    //   return sendJson(res, 401, { error: 'Sessão expirada.' });
+    // }
 
     try {
       const leads = await readLeads();

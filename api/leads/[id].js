@@ -1,5 +1,5 @@
 import { setSecurityHeaders, sendJson, readJsonBody, clean } from './lib/utils.js';
-import { isAuthenticated } from './lib/auth.js';
+// import { isAuthenticated } from './lib/auth.js';  // desabilitado no modo teste
 import { updateLeadInSupabase } from './lib/supabase.js';
 
 export default async function handler(req, res) {
@@ -9,9 +9,10 @@ export default async function handler(req, res) {
     return sendJson(res, 405, { error: 'Method not allowed' });
   }
 
-  if (!isAuthenticated(req)) {
-    return sendJson(res, 401, { error: 'Sessão expirada.' });
-  }
+  // MODO TESTE: sem autenticação
+  // if (!isAuthenticated(req)) {
+  //   return sendJson(res, 401, { error: 'Sessão expirada.' });
+  // }
 
   // Get id from Vercel dynamic route param
   let id = '';
