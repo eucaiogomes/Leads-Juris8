@@ -71,7 +71,7 @@ async function handleRequest(request, response) {
   }
 
   if (url.pathname === '/api/session' && request.method === 'GET') {
-    // TESTE: sempre autenticado para facilitar testes
+    // MODO TESTE: sempre autenticado (sem segurança)
     return sendJson(response, 200, { authenticated: true });
   }
 
