@@ -84,9 +84,15 @@ async function handleRequest(request, response) {
 
   if (url.pathname === '/api/leads' && request.method === 'GET') {
     if (!isAuthenticated(request)) return sendJson(response, 401, { error: 'Sessão expirada.' });
-    const leads = await readLeads();
-    leads.sort((a, b) => new Date(b.receivedAt) - new Date(a.receivedAt));
-    return sendJson(response, 200, { leads });
+    try {
+      const leads = await readLeads();
+      leads.sort((a, b) => new Date(b.receivedAt) - new Date(a.receivedAt));
+      return sendJson(response, 200, { leads });
+    } catch (err) {
+      console.error('Read leads error:', err);
+      const msg = err.message || 'Erro ao buscar leads.';
+      return sendJson(response, err.status || 502, { error: msg });
+    }
   }
 
   const leadMatch = url.pathname.match(/^\/api\/leads\/([a-zA-Z0-9_-]+)$/);
