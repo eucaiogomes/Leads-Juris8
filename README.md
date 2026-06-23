@@ -70,16 +70,22 @@ LEAD_ORIGINS=*
 
 ---
 
-**Teste sem login (já configurado)**
+**Teste sem login (já configurado para testes)**
 
-O código já está com autenticação desabilitada para testes:
+O código está em modo teste (sem segurança):
 - `/api/session` sempre retorna autenticado
 - Endpoints de leads não exigem login
 - Login aceita qualquer senha
 
 Basta rodar `npm start` + ngrok e abrir o painel direto. 
 
-Quando quiser voltar ao modo normal (com segurança), descomente as verificações de `isAuthenticated` no `server.mjs`.
+**Como testar no Supabase de verdade:**
+1. Envie leads pelo formulário usando a URL do ngrok.
+2. Abra o Supabase Dashboard > Table Editor > tabela "leads"
+3. Veja os registros aparecendo (usa a SERVICE_ROLE_KEY, bypass RLS).
+4. Atualize status/notas no painel -> salva no Supabase.
+
+Quando quiser voltar ao modo normal (com segurança), descomente as verificações de `isAuthenticated` nos arquivos server.mjs e api/*.js.
 
 ---
 
