@@ -240,17 +240,18 @@ async function handleCreateLead(request, response) {
 
   const lead = {
     id: randomUUID(),
-    name: clean(payload.nome, 120),
-    email: clean(payload.email, 180).toLowerCase(),
-    whatsapp: clean(payload.whatsapp, 30),
-    office: clean(payload.escritorio, 160),
-    cnpjs: clean(payload.quantidade_cnpjs, 30) || 'Não informado',
-    interest: clean(payload.interesse, 160) || 'Falar com a equipe',
-    page: clean(payload.pagina, 500),
-    consent: Boolean(payload.consentimento),
+    // Aceita tanto os campos da landing page (PT) quanto aliases em inglês
+    name:     clean(payload.nome     || payload.name,     120),
+    email:    clean(payload.email,   180).toLowerCase(),
+    whatsapp: clean(payload.telefone || payload.whatsapp || payload.phone, 30),
+    office:   clean(payload.empresa  || payload.escritorio || payload.office, 160),
+    cnpjs:    clean(payload.porte    || payload.quantidade_cnpjs || payload.cnpjs, 30) || 'Não informado',
+    interest: clean(payload.interesse || payload.mensagem || payload.message || payload.interest, 500) || 'Falar com a equipe',
+    page:     clean(payload.page     || payload.pagina    || payload.origem  || payload.source, 500),
+    consent:  Boolean(payload.consentimento_lgpd ?? payload.consentimento ?? payload.consent),
     status: 'novo',
     notes: '',
-    submittedAt: validDate(payload.enviado_em) || new Date().toISOString(),
+    submittedAt: validDate(payload.submitted_at || payload.enviado_em) || new Date().toISOString(),
     receivedAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
@@ -339,19 +340,19 @@ function mapSupabaseRowToLead(row) {
   if (!row || typeof row !== 'object') return null;
   return {
     id: row.id || `lead_${Date.now()}`,
-    name: row.nome || row.name || '',
+    name: row.name || '',
     email: row.email || '',
-    whatsapp: row.whatsapp || '',
-    office: row.escritorio || row.office || '',
-    cnpjs: row.quantidade_cnpjs || row.cnpjs || 'Não informado',
-    interest: row.interesse || row.interest || '',
-    page: row.pagina || row.page || '',
-    consent: Boolean(row.consentimento ?? row.consent ?? false),
+    whatsapp: row.phone || '',
+    office: row.office || '',
+    cnpjs: row.cnpjs || 'Não informado',
+    interest: row.message || '',
+    page: row.source || '',
+    consent: Boolean(row.consent ?? false),
     status: row.status || 'novo',
     notes: row.notes || '',
-    submittedAt: row.enviado_em || row.submitted_at || row.created_at || new Date().toISOString(),
-    receivedAt: row.received_at || row.created_at || row.enviado_em || new Date().toISOString(),
-    updatedAt: row.updated_at || row.received_at || row.created_at || new Date().toISOString(),
+    submittedAt: row.created_at || new Date().toISOString(),
+    receivedAt: row.created_at || new Date().toISOString(),
+    updatedAt: row.updated_at || row.created_at || new Date().toISOString(),
   };
 }
 
@@ -422,19 +423,17 @@ async function updateLeadInSupabase(id, patch) {
 }
 
 function mapLeadToSupabaseRow(lead) {
-  // Base columns confirmed to exist in current Supabase table.
-  // Status/notes/received_at/updated_at are added via optional migration SQL.
+  // Colunas da tabela pública.leads no Supabase (nomes em inglês).
   return {
     id: lead.id,
-    nome: lead.name,
+    name: lead.name,
     email: lead.email,
-    whatsapp: lead.whatsapp,
-    escritorio: lead.office,
-    quantidade_cnpjs: lead.cnpjs,
-    interesse: lead.interest,
-    pagina: lead.page || null,
-    consentimento: lead.consent,
-    enviado_em: lead.submittedAt,
+    phone: lead.whatsapp,
+    office: lead.office,
+    cnpjs: lead.cnpjs,
+    message: lead.interest,
+    source: lead.page || null,
+    consent: lead.consent,
   };
 }
 
